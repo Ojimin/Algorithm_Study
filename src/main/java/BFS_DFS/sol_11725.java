@@ -1,20 +1,19 @@
 package BFS_DFS;
 
-//11725 - 트리의 부모 찾기 : 트리의 루트를 1이라고 정했을때, 각 노드의 부모를 구하는 프로그램 작성
-//트리, dfs로 구현해야할것같음, 인접리스트로 해야할 것 같은데?, 부모노드: 바로 전 노드
-//인접리스트를 리스트+리스트로 구현해볼게
-//다시
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+//11725- 트리의 부모 찾기, 트리의루트를 1이라고 가정, 각 노드의 부모 구하기
+//그래프탐색(인접연결리스트), dfs
+//visited[true]이면 돌아가는 시점에서 result[i]=now;
 public class sol_11725 {
     static int N;
-    static ArrayList<ArrayList<Integer>> list;
+    static ArrayList<ArrayList<Integer>> list; //인접리스트생성
     static boolean[] visited;
-    static int[] result;
+    static int[] result; //각 부모노드 저장할 배열
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
@@ -40,7 +39,7 @@ public class sol_11725 {
     }
 
     public static void dfs(int node) {
-        //나를 호출한 직전 애가 부모노드라고
+        if(visited[node]) return ;
         visited[node] = true;
         for (int v : list.get(node)) {
             if(!visited[v]) {
