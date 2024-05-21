@@ -1,8 +1,6 @@
 package 문자열;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 //1157-단어 공부, 대소문자 구별 x, 가장 많이 사용된 알파벳 출력
@@ -10,7 +8,7 @@ import java.util.Scanner;
 //알파벳 'a~z' 총 26개로 배열 선언
 //입력 문자열 길이만큼 반복문 실행
 //알파벳 개수만큼 반복문 실행
-public class nonsol_1157 {
+public class sol_1157 {
     public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(System.in);
         String str = sc.next().toUpperCase();
@@ -24,7 +22,7 @@ public class nonsol_1157 {
         for (int i=0;i<numCnt.length;i++) {
             if(max<numCnt[i]){
                 max=numCnt[i];
-                answer=(char)(i+'A'); //아스키코드 int to char 
+                answer=(char)(i+'A'); //아스키코드 int to char
             }else if(max==numCnt[i]) { //여러개 이상 나오면 ? 처리
                 answer='?';
             }
