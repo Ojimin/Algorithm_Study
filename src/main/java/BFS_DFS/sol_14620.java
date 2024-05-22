@@ -7,7 +7,7 @@ package BFS_DFS;
 //서로 다른 세 씨앗을 모두 꽃이 피게하면서 가장 싼 가격에 화단으 대여하고 싶음
 //출력 : 꽃을 심기 위한 최소 비용 구하자
 //bfs?
-public class 꽃길_14620 {
+public class sol_14620 {
     public static void main(String[] args) {
 
     }
