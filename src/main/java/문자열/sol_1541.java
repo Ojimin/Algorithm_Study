@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
 //키포인트 : 최대한 큰수를 빼는것. 덧셈부분을 먼저 계산한다!!
 //주의 : 첫번째 수는 양수!!, split으로 분리할시에 split의 경우 정규식을 받기 때문에 +를 하면 regex.pattern 어쩌구 exception을 뱉음.escape 처리를 위해 \\+를 해줘야함,
 //StringTokenizer로 분리해서 푸는 방법도 있다
-public class nonsol_1541 {
+public class sol_1541 {
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int sum = Integer.MAX_VALUE;
