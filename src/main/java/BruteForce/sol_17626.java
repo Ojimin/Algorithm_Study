@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
 //다른방법 : N에서 점점 제곱근을 빼서 0만들기?
 //dp[i] = min (dp[i-j*j])+1;
 //다시
-public class nonsol_17626 {
+public class sol_17626 {
     static int N;
 
     public static void main(String[] args) throws Exception {
