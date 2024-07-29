@@ -7,9 +7,10 @@ import java.util.StringTokenizer;
 
 //6603 - 1~49에서 수 6개를 고름. 49 중 k개의 수를 골라 집합 s를 만든 다음 그 수만 가지고 6개의 번호를 선택하는 것.
 //조합으로 6개 뽑고 사전순으로 출력
-//이해 안됨...ㅠㅜ
 //backtracking or dfs
-public class nonsol_6603 {
+//백트래킹: 경로를 찾아가는 도중에 해가 되지 않을 것 같다는 경로가 갔다면 더 가지 않고 되돌아옴
+//dfs : 불필요한 경로를 사전에 차단하는 행동이 없어 모든 경로를 탐색함
+public class sol_6603 {
     static int K;
     static ArrayList<Integer> arrayList;
     static boolean[] visited;
