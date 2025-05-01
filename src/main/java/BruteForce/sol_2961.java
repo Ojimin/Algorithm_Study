@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
 //최소차 구하기
 //브루트포스
 //1. 배열 N*2에서
-public class nonsol_2961 {
+public class sol_2961 {
     static int N;
     static int[][] arr;
     static boolean[] visited;
