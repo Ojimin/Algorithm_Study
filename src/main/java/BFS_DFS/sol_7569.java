@@ -16,7 +16,7 @@ import java.util.StringTokenizer;
 //유기농 배추랑 비슷한듯
 //다시 - 날짜 세는 것 때문에
 //생각해야할 점 : 날짜 세는게 좀 까다롭다
-public class nonsol_7569 {
+public class sol_7569 {
     static int M, N, H;
     static int[][][] graph;
     static boolean[][][] visited;
