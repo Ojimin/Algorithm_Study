@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.StringTokenizer;
 
 // 13023 - ABCDE
@@ -13,7 +12,7 @@ import java.util.StringTokenizer;
 // 인접 리스트의 dfs?
 // a->b 이면 a와 b가 친구라는 뜻. 즉 양방향 그래프
 // set으로 풀면 엄청 오래걸림 => depth로 풀자!!
-public class nonsol_13023 {
+public class sol_13023 {
     static ArrayList<Integer>[] graph;
     static boolean[] visited;
 //    static HashSet<Integer> set;
