@@ -8,7 +8,8 @@ import java.util.StringTokenizer;
 // M명의 조카, N개의 과자가 있을 때, 조카 1명에게 줄 수 있는 막대과자의 최대 길이
 // 조카에게는 모두 같은 과자의 길이를 줘야함
 // 출력 : 1명에게 줄 수 있는 막대 과자의 최대 길이 & 같은 길이를 줄 수 없다면 0 출력
-// 주어지는 과자 길이는 오름차순으로 정렬되어서 주어짐
+// 주어지는 과자 길이는 오름차순으로 정렬되어서 주어짐 => 아니여서 틀렸음. 이분탐색은 꼭 오름차순 정렬이 필요
+// 이분탐색 문제 => mid와 key 값의 결과에 따라 low, high 조절
 public class Main {
     static int M, N;
     static int[] arr;
@@ -41,7 +42,9 @@ public class Main {
         while (low <= high) {
             mid = (low+high)/2;
             // 가능하면 low= mid+1
-            if (isPossible(mid)) {
+            int cnt = checkCnt(mid);
+            if (cnt >= M) {
+                if (mid > max) max = mid;
                 low = mid+1;
             } else {
                 high = mid-1;
@@ -50,7 +53,7 @@ public class Main {
         }
         System.out.println(max);
     }
-
+    // 내 코드
     public static boolean isPossible(int mid) {
         int cnt = 0;
         boolean isPossible = false;
@@ -71,5 +74,17 @@ public class Main {
         }
 
         return isPossible;
+    }
+
+    // 개선된 코드
+    public static int checkCnt(int mid) {
+        int cnt = 0;
+        for (int i=0; i<N; i++) {
+            if (arr[i] < mid) continue;
+            else {
+                cnt += arr[i]/mid;
+            }
+        }
+        return cnt;
     }
 }
