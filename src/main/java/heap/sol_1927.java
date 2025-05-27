@@ -1,4 +1,4 @@
-package 자료구조;
+package heap;
 
 import java.io.BufferedReader;
 import java.io.IOException;
