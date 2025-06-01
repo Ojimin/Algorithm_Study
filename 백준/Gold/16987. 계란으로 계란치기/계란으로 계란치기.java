@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 // 16987 - 계란으로 바위치기
@@ -54,10 +53,6 @@ public class Main {
         for (int i=0; i<N; i++) {
             // tmp[i] 값이 0보다 작으면 넘기기(깨뜨리지 말기)
             if (depth == i || tmp[i]<=0) continue;
-            // Depth가 0이면 내구도를 임시 저장할 배열 생성
-            if (depth == 0) {
-                for (int j=0; j<N; j++) tmp[j] = arr[j][0];
-            }
             countEgg(depth, i);
             dfs(depth+1);
             recoverEgg(depth, i);
