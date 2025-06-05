@@ -3,6 +3,7 @@ package Simulation;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 // 1138 - 한줄로 서기
@@ -11,12 +12,14 @@ import java.util.StringTokenizer;
 // 입력 : 키가 1인사람주터 차례대로 자기보다 큰 사람이 왼쪽에 몇명 있는지 입력
 // 출력 : 줄을 선 순서대로 키 출력
 // 구현? 그리디 => 정렬되어있으므로
+// (나) 푸는 방법 : 순서대로 1~N까지의 위치를 찾아간다. 조건대로.. 이렇게 푸니까 까다로움
 // 최적화 필요 + 혼자서 풀었지만 다시 풀어보기
+// 다른사람 풀이 : arraylist로 키카 큰 순서대로 해당 인덱스 자리에 넣기 => 와이? 키 큰 순서대로 앞에다 채우면 논리적 오류가 발생할 일이 x
 public class sol_1138 {
     static int N;
     static int[] arr;
     static int[] result;
-
+    static ArrayList<Integer> list = new ArrayList<>();
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
@@ -29,9 +32,10 @@ public class sol_1138 {
         for (int i=0; i<N; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
         }
-        solve();
+//        solve();
+        solve2();
         for (int i=0; i<N; i++) {
-            System.out.print(result[i] + " ");
+            System.out.print(list.get(i) + " ");
         }
     }
 
@@ -84,6 +88,12 @@ public class sol_1138 {
             }
         }
     }
+    public static void solve2() {
+        for (int i=N-1; i>=0; i--) {
+            list.add(arr[i], i+1);
+        }
+    }
+
 
 
 
