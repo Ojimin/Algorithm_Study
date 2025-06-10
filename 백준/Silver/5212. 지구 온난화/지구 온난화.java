@@ -1,84 +1,75 @@
-
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-//5212 - 지구온난화, 인접한 세칸 또는 네칸에 바다가 있는 땅은 모두 잠겨버림
-// 출력 : 50년 후 지도 출력
-// x = 땅, . = 바다
-// 1. map을 돌면서 잠길 땅을 확인 - 땅이면 findSeaCnt 호출해서 주위 바다 확인, 바다를 aroundsea에 저장
-// 2. 인접 바다가 3칸 이상이면 가라않기 - removeLand : aroundSea 값이 3이상이면 0으로 변경
-// 3. 지도에서 잠길부분 줄이기 - map을 돌면서 땅인 부분에 minX, minY, maxX, maxY 값 저장 => map[minX][minY] ~ map[maxX][maxY] 출력
-// 바다는 0, 땅은 1
+// 5212 - 지구온난화
+// 'X' = 땅, '.' = 바다
+// 인접한 세네칸에 바다가 있는 땅은 모두. ㅏㅁ겨버림
+// 출력 : 50년 후의 지도 출력 => 지도 크기는 모든 섬을 포함하는 가장 작은 직사각형
+// 주의. 50년 뒤 지도에 섬을 포함한 최소 직사각형 => 섬의 최대 x, 최대 y값 구하기
 public class Main {
-    static int R, C, minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE, maxX = -1, maxY = -1;
-    static int[][] map, aroundSea;
-    static int[] dx = {-1, 0, 0, 1};
-    static int[] dy = {0, -1, 1, 0};
-
-    public static void main(String[] args) throws Exception {
+    static int[] dx = {-1, 1, 0, 0};
+    static int[] dy = {0, 0, -1, 1};
+    static int R, C, maxR, maxC, minR, minC;
+    static char[][] map, newMap;
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer stringTokenizer = new StringTokenizer(br.readLine());
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        StringBuilder sb = new StringBuilder();
+        R = Integer.parseInt(st.nextToken());
+        C = Integer.parseInt(st.nextToken());
+        map = new char[R][C];
+        newMap = new char[R][C];
+        maxR = 0;
+        maxC = 0;
+        minR = Integer.MAX_VALUE;
+        minC = Integer.MAX_VALUE;
 
-        R = Integer.parseInt(stringTokenizer.nextToken());
-        C = Integer.parseInt(stringTokenizer.nextToken());
-
-        aroundSea = new int[R][C];
-        map = new int[R][C];
-        for (int i = 0; i < R; i++) {
-            char[] arr = br.readLine().toCharArray();
-            for (int j = 0; j < C; j++) {
-                map[i][j] = arr[j] == '.' ? 0 : 1;
+        for (int i=0; i<R; i++) {
+            String line = br.readLine();
+            char[] chars = line.toCharArray();
+            for (int j=0; j<C; j++) {
+                map[i][j] = chars[j];
             }
         }
 
-        for (int i = 0; i < R; i++) {
-            for (int j = 0; j < C; j++) {
-                if (map[i][j] == 1) findSeaCnt(i, j);
+        //그래프 탐색
+        for (int i=0; i<R; i++) {
+            for (int j=0; j<C; j++) {
+                if (map[i][j] == 'X') {
+                    boolean isChanged =checkChange(i, j);
+                    if (isChanged) {
+                        newMap[i][j] = '.';
+                    } else{
+                        maxR = Math.max(maxR, i);
+                        maxC = Math.max(maxC, j);
+                        minR = Math.min(minR, i);
+                        minC = Math.min(minC, j);
+                        newMap[i][j] = 'X';
+                    }
+                } else newMap[i][j] = map[i][j];
             }
         }
-        removeLand();
-        makeMap();
-        /**
-         * 결과 출력
-         */
-        for (int i = minX; i <= maxX; i++) {
-            for (int j = minY; j <= maxY; j++) {
-                System.out.print(map[i][j] == 0 ? '.' : 'X');
+        for (int i=minR; i<=maxR; i++) {
+            for (int j=minC; j<=maxC; j++) {
+                sb.append(newMap[i][j]);
             }
-            System.out.println();
+            sb.append("\n");
         }
+        System.out.println(sb);
+
     }
 
-    private static void makeMap() {
-        for (int i = 0; i < R; i++) {
-            for (int j = 0; j < C; j++) {
-                if (map[i][j] == 1) {
-                    minX = minX > i ? i : minX;
-                    minY = minY > j ? j : minY;
-                    maxX = maxX < i ? i : maxX;
-                    maxY = maxY < j ? j : maxY;
-                }
-            }
-        }
-    }
+    public static boolean checkChange(int i, int j) {
+        int cnt = 0;
+        for (int k=0; k<4; k++) {
+            int nx = i + dx[k];
+            int ny = j + dy[k];
 
-    private static void removeLand() {
-        for (int i = 0; i < R; i++) {
-            for (int j = 0; j < C; j++) {
-                if (aroundSea[i][j] >= 3) {
-                    map[i][j] = 0;
-                }
-            }
+            if (nx <0 || nx>=R || ny<0 || ny>=C || map[nx][ny] == '.') cnt++;
         }
+        if (cnt >= 3) return true;
+        return false;
     }
-
-    private static void findSeaCnt(int x, int y) {
-        for (int i = 0; i < 4; i++) {
-            int nx = x + dx[i];
-            int ny = y + dy[i];
-
-            if (nx < 0 || ny < 0 || R <= nx || C <= ny || map[nx][ny] == 0) aroundSea[x][y] += 1;
-        }
-    }
-}
+ }
