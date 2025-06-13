@@ -1,8 +1,7 @@
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.StringTokenizer;
 
 // 14500 - 테트로미노
@@ -16,6 +15,7 @@ import java.util.StringTokenizer;
 // 어떤 방식으로 구현? 백트래킹 & 시뮬, dfs
 // 회전과 대칭을 어떻게 구현? => dfs식으로 풀면 가운데 손가락 모양의 테트로미노일때 예외발생 => 동시에 양옆 체크해서 계산,,
 // 예외조건 하나더 추가? 만약 이동이 세방향 이상 가능할때, 굳이 방문하지 않고 계산 ㄱ
+// 반례 : 중간에 2,3방향으로 가는 케이스 생각 못했음
 public class Main {
     static int N, M, map[][];
     static boolean[][] visited;
@@ -36,6 +36,7 @@ public class Main {
                 map[i][j] = Integer.parseInt(st.nextToken());
             }
         }
+
         for (int i=0; i<N; i++) {
             for (int j=0; j<M; j++) {
                 dfs(i, j, 1, map[i][j]);
@@ -54,36 +55,41 @@ public class Main {
             return;
         }
 
-        int threeWay = 0;
+//        int threeWay = 0;
         for (int i=0; i<4; i++) {
             int nx = x + dx[i];
             int ny = y + dy[i];
             if (nx < 0 || ny < 0 || nx >= N || ny >= M || visited[nx][ny]) continue;
+            if (depth == 2) {
+                visited[nx][ny] = true;
+                dfs(x, y, depth+1, cnt+map[nx][ny]);
+                visited[nx][ny] = false;
+            }
             visited[nx][ny] = true;
             dfs(nx, ny, depth+1, cnt+map[nx][ny]);
             visited[nx][ny] = false;
-            threeWay++;
+//            threeWay++;
         }
-        if (depth == 2 && threeWay >=2) isThreeWay(x, y, depth, cnt);
+//        if (depth == 2 && threeWay >=2) isThreeWay(x, y, depth, cnt);
     }
 
-    public static void isThreeWay(int x, int y, int depth, int cnt) {
-        for (int i=0; i<3; i++) {
-            int nx = x + dx[i];
-            int ny = y + dy[i];
-            if (nx < 0 || ny < 0 || nx >= N || ny >= M || visited[nx][ny]) continue;
-            for (int j=i+1; j<4; j++) {
-                int nx2 = x + dx[j];
-                int ny2 = y + dy[j];
-                if (nx2 < 0 || ny2 < 0 || nx2>=N || ny2 >= M || visited[nx2][ny2]) continue;
-                if (!visited[nx][ny] && !visited[nx2][ny2]) {
-                    cnt += map[nx][ny];
-                    cnt += map[nx2][ny2];
-                    if (cnt > max) max = cnt;
-                    cnt -= map[nx][ny];
-                    cnt -= map[nx2][ny2];
-                }
-            }
-        }
-    }
+//    public static void isThreeWay(int x, int y, int depth, int cnt) {
+//        for (int i=0; i<3; i++) {
+//            int nx = x + dx[i];
+//            int ny = y + dy[i];
+//            if (nx < 0 || ny < 0 || nx >= N || ny >= M || visited[nx][ny]) continue;
+//            for (int j=i+1; j<4; j++) {
+//                int nx2 = x + dx[j];
+//                int ny2 = y + dy[j];
+//                if (nx2 < 0 || ny2 < 0 || nx2>=N || ny2 >= M || visited[nx2][ny2]) continue;
+//                if (!visited[nx][ny] && !visited[nx2][ny2]) {
+//                    cnt += map[nx][ny];
+//                    cnt += map[nx2][ny2];
+//                    if (cnt > max) max = cnt;
+//                    cnt -= map[nx][ny];
+//                    cnt -= map[nx2][ny2];
+//                }
+//            }
+//        }
+//    }
 }
