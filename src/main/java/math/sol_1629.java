@@ -13,7 +13,7 @@ import java.util.StringTokenizer;
 // 분할정복 vs Dp 차이점 : 분할정복은 각 부분문제를 독립적으로 해결하고 합침
 // 다시
 // 지수법치 & 모듈로 연산 => 2^4 % c= (2^2) % c * (2^2) % c
-public class sol_1692 {
+public class sol_1629 {
     static int A, B, C;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
