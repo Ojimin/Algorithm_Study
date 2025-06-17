@@ -14,6 +14,8 @@ import java.util.StringTokenizer;
 // 항상 그리디 문제는 잘 정렬해야하는 것이 핵심!
 // 주의 : 시작 시간 & 끝나는 시간 : 2^31 -1, N<= 10^5
 // 정렬 후 반복문 한바퀴 돌면서 끝나는 시간 기준 더 짧게 끝나는 것이 있으면 교체 -> 아니면 끝나는 시간 이후 가 시작이면 추가
+// 꼭 정렬 시 2가지 기준으로 정렬
+// 그리디 - 끝나는 시간이 빠른 순으로, 끝나는 시간이 같다면 시작하는 시간이 빠른 순으로 정렬 => 나랑 반대로??정렬함
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -25,21 +27,35 @@ public class Main {
             time[i][0] = Long.parseLong(st.nextToken());
             time[i][1] = Long.parseLong(st.nextToken());
         }
-        Arrays.sort(time, Comparator.comparingLong((long[] arr) -> arr[0]).thenComparing(arr -> arr[1] ));
+//        Arrays.sort(time, Comparator.comparingLong((long[] arr) -> arr[0]).thenComparing(arr -> arr[1] ));
+        Arrays.sort(time, Comparator.comparingLong((long[] arr) -> arr[1]).thenComparing(arr->arr[0]));
        // 1. 시작시간 확인 => 시작시간이 타임테이블 마지막 리스트의 끝나느시간보다 크면 넣기
        // 2 끝나는 시간 확인 => 그게아니면 끝나는 시간 확인해서 일찍끝나면 바꿔치기!!
-        for (int i=0; i<N; i++) {
-            if (!timeTable.isEmpty()) {
-                // 리스트에 저장한 끝날시간이 시작시간보다 큰경우
-                if (timeTable.get(timeTable.size()-1)[1] > time[i][0]) {
-                    if (time[i][1] < timeTable.get(timeTable.size()-1)[1]) {
-                        timeTable.remove(timeTable.size()-1);
-                        timeTable.add(new Long[]{time[i][0], time[i][1]});
-                    }
-                } else timeTable.add(new Long[]{time[i][0], time[i][1]});
+//        for (int i=0; i<N; i++) {
+//            if (!timeTable.isEmpty()) {
+//                // 리스트에 저장한 끝날시간이 시작시간보다 큰경우
+//                if (timeTable.get(timeTable.size()-1)[1] > time[i][0]) {
+//                    if (time[i][1] < timeTable.get(timeTable.size()-1)[1]) {
+//                        timeTable.remove(timeTable.size()-1);
+//                        timeTable.add(new Long[]{time[i][0], time[i][1]});
+//                    }
+//                } else timeTable.add(new Long[]{time[i][0], time[i][1]});
+//            }
+//            else timeTable.add(new Long[]{time[i][0], time[i][1]});
+//        }
+        int cnt = 0;
+        long tmp[][] = new long[1][2];
+        for (int i=0;i<N; i++) {
+            if (i == 0) {
+                tmp[0][0] = time[i][0];
+                tmp[0][1] = time[i][1];
+                cnt++;
+            } else if (tmp[0][1] <= time[i][0]) {
+                tmp[0][0] = time[i][0];
+                tmp[0][1] = time[i][1];
+                cnt++;
             }
-            else timeTable.add(new Long[]{time[i][0], time[i][1]});
         }
-        System.out.println(timeTable.size());
+        System.out.println(cnt);
     }
 }
