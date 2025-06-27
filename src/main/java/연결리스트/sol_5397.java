@@ -12,6 +12,7 @@ import java.util.ListIterator;
 // 화살표 입력 : '<', '>', 커서 위치를 왼쪽, 오른쪽으로 1만큼 움직임
 // 나머지 문자는 비밀번호 일부
 // 출력 : 비밀번호 추력
+// 추후 스택 활용해서도 풀어볼 것
 public class sol_5397 {
     static StringBuilder sb= new StringBuilder();
     public static void main(String[] args) throws IOException {
