@@ -10,7 +10,7 @@ import java.util.StringTokenizer;
 // 1926 - 그림
 // 출력 : 그림의 개수, 그 그림 중 가장 넓은 것의 넓이를 출력
 // 그림 : 1로 연결된 것,
-public class nonsol_1926 {
+public class sol_1926 {
     static int[][] map;
     static boolean[][] visited;
     static int[] dx = {-1,1, 0, 0};
