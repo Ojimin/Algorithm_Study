@@ -10,7 +10,7 @@ import java.util.StringTokenizer;
 // 5427 - 불
 // 4179와 유사한 문제
 // 왜 visited 안해도 되는지.. 고민
-public class nonsol_5427 {
+public class sol_5427 {
     static int W, H;
     static char[][] map;
     static boolean[][] visited;
@@ -40,7 +40,6 @@ public class nonsol_5427 {
             isExit = false;
             jQ = new LinkedList<>();
             fireQ = new LinkedList<>();
-            int startX = 0, startY = 0;
             for (int i=0; i<H; i++) {
                 String str= br.readLine();
                 for (int j=0; j<W; j++) {
@@ -75,15 +74,15 @@ public class nonsol_5427 {
                     exitTime = jTime[now[0]][now[1]]+1;
                     return;
                 }
-                if (map[nx][ny] == '#' || map[nx][ny] == '*' ) continue;
+                if (visited[nx][ny] || map[nx][ny] == '#' || map[nx][ny] == '*' ) continue;
                 int time = jTime[now[0]][now[1]] +1;
+                visited[nx][ny] = true;
                 if (fireTime[nx][ny] != 0 && time >= fireTime[nx][ny]){
                     continue;
                 }
                 jTime[nx][ny] = time;
                 jQ.offer(new int[]{nx, ny});
             }
-
         }
 
     }
@@ -95,7 +94,7 @@ public class nonsol_5427 {
                 int nx = now[0] + dx[i];
                 int ny = now[1] + dy[i];
 
-                if (nx<0 || nx>=H || ny<0 || ny>=W || map[nx][ny] == '#') continue;
+                if (nx<0 || nx>=H || ny<0 || ny>=W || map[nx][ny] == '#' || map[nx][ny] == '*') continue;
                 if (fireTime[nx][ny] != 0 && fireTime[nx][ny] <= fireTime[now[0]][now[1]] + 1) continue;
                 fireTime[nx][ny] = fireTime[now[0]][now[1]] + 1;
                 fireQ.offer(new int[]{nx, ny});
