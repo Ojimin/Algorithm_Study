@@ -19,7 +19,6 @@ public class sol_5427 {
     static int exitTime = 0;
     static boolean isExit = false;
     static int[][] fireTime, jTime;
-    static char tmpMap[][];
     static Queue<int[]> jQ, fireQ;
     //    static int exitCnt = 0;
 //    static ArrayList<int[]> jList = new ArrayList<>();
