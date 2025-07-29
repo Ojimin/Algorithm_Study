@@ -20,7 +20,9 @@ import java.util.Queue;
 // 1. 25개 중 7개 뽑기, 이떄 Y가 4개 이상이면 안되게
 // 2. 7개 뽑은 것들이 연결되는지 확인하기
 // 3. 연결되면 카운팅
-public class nonsol_1941 {
+// 핵심 : 2차원 배열을 중복없이 조합하기 위해 일차원 배열로 풀것!!!
+// 조합과 순열의 차이 : start를 체크하냐 아니냐의 차이
+public class sol_1941 {
     static char[][] map = new char[5][5];
     static boolean[] visited;
     static int result=0;
