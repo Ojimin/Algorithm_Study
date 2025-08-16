@@ -1,80 +1,85 @@
+
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.PriorityQueue;
-import java.util.StringTokenizer;
+import java.util.*;
 
+// 1238 - 파티
+// N개의 숫자로 구분된 각 마을에 한명의 학생이 살고있음==N명
+// N명 학생이 X번 마을에 모여서 파티.  M개의 단방향 도로들 i번째 길을 지나는데 Ti의 사간을 소비함
+// 도로들은 모두 단방향, N명의 학생들 중 오고 가는데 가장 많은 시간 소비하는 학생 누구?
+// 출력: N명의 학생중, X번 마을까지 오고가는데(왕복) 가장 오래 걸린 학생의 소요시간
+// A->B로 가는 도로는 최대 1개로 제한
+// 다시 : 역방향 그래프!!!! => 2번만 다익스트라 계산해서 최단거리 계산 가능
 public class Main {
-	static BufferedReader br;
-	static BufferedWriter bw;
-	static StringBuilder sb;
-	static StringTokenizer st;
-	static int n, m, x, a, b, t, dist[], r_dist[];
-	static ArrayList<Node> adj[], r_adj[];
-	public static void main(String[] args) throws IOException {
-		br = new BufferedReader(new InputStreamReader(System.in));
-		bw = new BufferedWriter(new OutputStreamWriter(System.out));
-		st = new StringTokenizer(br.readLine());
-		n = Integer.parseInt(st.nextToken());
-		m = Integer.parseInt(st.nextToken());
-		x = Integer.parseInt(st.nextToken());
-		adj = new ArrayList[n + 1];
-		r_adj = new ArrayList[n + 1];
-		dist = new int[n+1];
-		r_dist = new int[n+1];
-		Arrays.fill(dist, Integer.MAX_VALUE);
-		Arrays.fill(r_dist, Integer.MAX_VALUE);
+    static class Node {
+        int idx;
+        int cost;
 
-		for (int i = 0; i <= n; i++) {
-			adj[i] = new ArrayList<>();
-			r_adj[i] = new ArrayList<>();
-		}
-		for (int i = 0; i < m; i++) {
-			st = new StringTokenizer(br.readLine());
-			a = Integer.parseInt(st.nextToken());
-			b = Integer.parseInt(st.nextToken());
-			t = Integer.parseInt(st.nextToken());
-			adj[a].add(new Node(b, t));
-			r_adj[b].add(new Node(a, t));
-		}
-		dijkstra(adj, dist, x);
-		dijkstra(r_adj, r_dist, x);
-		
-		int max = 0;
-		for(int i=1; i<=n; i++) {
-			max = Math.max(max, dist[i] + r_dist[i]);
-		}
-		System.out.println(max);
-	}
-	static void dijkstra(ArrayList<Node>[] arr, int[] dist, int start) {
-		PriorityQueue<Node> q = new PriorityQueue<Node>();
-		q.add(new Node(start, 0));
-		dist[start] = 0;	
-		while(!q.isEmpty()) {
-			Node now = q.poll();
-			for(Node next : arr[now.node]) {
-				if (dist[next.node] > dist[now.node] + next.time) {
-					dist[next.node] = dist[now.node] + next.time;
-					q.add(new Node(next.node, dist[next.node]));
-				}
-			}
-		}
-	}
-	static class Node implements Comparable<Node> {
-		int node;
-		int time;
-		public Node(int node, int time) {
-			super();
-			this.node = node;
-			this.time = time;
-		}
-		@Override
-		public int compareTo(Node o) {
-			return this.time - o.time;
-		}
-	}
+        public Node(int idx, int cost) {
+            this.idx = idx;
+            this.cost = cost;
+        }
+    }
+    static int N, M, X;
+    static int[] distX;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        X = Integer.parseInt(st.nextToken());
+        ArrayList<Node>[] graph = new ArrayList[N+1];
+        ArrayList<Node>[] reGraph = new ArrayList[N+1];
+        int answer = Integer.MIN_VALUE;
+        for (int i=0; i<=N; i++) {
+            graph[i] = new ArrayList<>();
+            reGraph[i] = new ArrayList<>();
+        }
+        for (int i=0; i<M; i++) {
+            st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            int cost = Integer.parseInt(st.nextToken());
+            graph[a].add(new Node(b, cost));
+            reGraph[b].add(new Node(a, cost));
+        }
+
+        distX = new int[N+1];
+        int dist[] = new int[N+1];
+        dijkstra(X, distX, graph);
+        dijkstra(X, dist, reGraph);
+        for (int i=1; i<=N; i++) {
+            int time = dist[i] + distX[i];
+            answer = Math.max(answer, time);
+        }
+        System.out.println(answer);
+    }
+
+    public static void dijkstra(int start, int[] dist, ArrayList<Node>[] graph) {
+        PriorityQueue<Node> pq = new PriorityQueue<>(new Comparator<Node>() {
+            @Override
+            public int compare(Node o1, Node o2) {
+                return o1.cost - o2.cost;
+            }
+        });
+        boolean[] check = new boolean[N+1];
+        pq.offer(new Node(start, 0));
+        Arrays.fill(dist, 1_000_000_000);
+        dist[start] = 0;
+
+        while(!pq.isEmpty()) {
+            Node now = pq.poll();
+            int nowIdx = now.idx;
+            if(check[nowIdx]) continue;
+            check[nowIdx] = true;
+
+            for (Node next : graph[nowIdx]) {
+                if (dist[next.idx] > dist[nowIdx] + next.cost) {
+                    dist[next.idx] = dist[nowIdx] + next.cost;
+                    pq.offer(new Node(next.idx, dist[next.idx]));
+                }
+            }
+        }
+    }
 }
