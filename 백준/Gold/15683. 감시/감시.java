@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.util.*;
 
 // 15683 - 감시
@@ -70,9 +69,14 @@ public class Main {
             return;
         }
 
-        for (int i=0; i<4; i++) {
-            dirComb[level] = i;
+        if (cctvs.get(level).num == 5) {
+            dirComb[level] = 0;
             dfs(level+1, dirComb);
+        } else {
+            for (int i=0; i<4; i++) {
+                dirComb[level] = i;
+                dfs(level+1, dirComb);
+            }
         }
     }
     // 방향 조합 => 이동을 아래 함수에서 진행하자
