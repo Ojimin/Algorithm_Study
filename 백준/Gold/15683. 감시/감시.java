@@ -142,24 +142,15 @@ public class Main {
     }
     // 이동 - cctv 숫자, 위치, 방향 필요
     public static void move(int[][] copyMap, CCTV cctv, int dir) {
-        Queue<CCTV> q = new LinkedList<>();
-        q.offer(cctv);
-        boolean[][] visited = new boolean[N][M];
-        visited[cctv.x][cctv.y] = true;
-
-        while(!q.isEmpty()) {
-            CCTV now = q.poll();
-            int nextX = now.x + dx[dir];
-            int nextY = now.y + dy[dir];
-            if(nextX < 0 || nextX >= N || nextY<0 || nextY>=M || visited[nextX][nextY]) continue;
-            if (copyMap[nextX][nextY] == 6) continue;
-            if (copyMap[nextX][nextY] == 0) {
-                copyMap[nextX][nextY] = 10;
-                visited[nextX][nextY] = true;
-                q.offer(new CCTV(10, nextX, nextY));
-            } else { // 1, 2, 3, 4, 5
-                visited[nextX][nextY] = true;
-                q.offer(new CCTV(copyMap[nextX][nextY], nextX, nextY));
+        int x = cctv.x;
+        int y = cctv.y;
+        while(true) {
+            x += dx[dir];
+            y += dy[dir];
+            if(x < 0 || x >= N || y<0 || y>=M) break;
+            if (copyMap[x][y] == 6) break;
+            if (copyMap[x][y] == 0) {
+                copyMap[x][y] = 10;
             }
         }
     }
