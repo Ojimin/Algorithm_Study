@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -36,9 +35,10 @@ public class Main {
             }
         }
         length = chickList.size();
-        for (int i=1; i<=M; i++) {
-            dfs(0, i, 0, new int[i]);
-        }
+        // for (int i=1; i<=M; i++) {
+            // dfs(0, i, 0, new int[i]);
+        // }
+        dfs(0, M, 0, new int[M]);
         System.out.println(answer);
     }
 
