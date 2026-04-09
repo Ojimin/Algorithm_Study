@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 // 12100 - 2048(Easy)
+// 규칙 0. 한번 이동에 1. 합치기 2. 앞에 자리 있으면 이동하기가 이루어짐
 // 규칙 1. 한번의 이동에서 이미 합쳐진 블록은 또 합쳐질 수 없음
 // 규칙 2. 똑같은 값 세개가 있으면 이동하려고 하는 쪽의 칸이 먼저 합쳐짐 => 위쪽으로 이동시 위쪽에 있는 블록
 // 출력 : 최대 5번 이동해서 만들 수 있는 가장 큰 블록의 값 => 무조건 5번까지는 이동해야함
@@ -15,6 +16,7 @@ import java.util.StringTokenizer;
 // 반례 : 0처리 안함 & 제일 최소, 제일 최대일때 인덱스에만 저장하도록 변경, visited 변경, 같은 이차원배열을 쓰면 원본값도 바뀜 =>
 // 다시 -문제 이해 O, but 메서드 여러개로 분리해서 필요한 조건 명확히 분리
 // 키포인트 : 원본 map 상태를 백업,
+// <구현> 1. 게임판 상하좌우로 기울이기 2. 5번 기울이는 각각의 방향 정하기 => board2에 board1을 복사해 board2를 변형시킨다. 감시 참고)
 public class nonsol_12100 {
     static int N;
     static int[] dx = {-1, 0, 1, 0}; // 위 오른쪽 아래 왼쪽
@@ -36,6 +38,22 @@ public class nonsol_12100 {
         }
         game(0);
         System.out.println(max);
+    }
+
+    // 한행을 왼쪽으로 기울였을 때 계산하는 함수 => O(N)으로 줄이기 위해
+    // idx 값을 따로 둬서 해당 idx는 arr에 블록이 들어올 수 있는 위치를 표시
+    public static void moveLeft() {
+        int[] arr = new int[8];
+        for (int i=0; i<8; i++) {
+            for (int j=i; j>=0; j--) {
+                if (arr[j] != 0) {
+                    if (arr[j] == arr[j-1]) {
+                        arr[j] *= 2;
+                        arr[j-1] = 0;
+                    }
+                } else arr[j] = arr[j-1];
+            }
+        }
     }
 
     // 최대 5번 이동시키기
